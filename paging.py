@@ -5,14 +5,12 @@ import sys
 import random
 pages = ""
 
-for i in range(10):
+page_len = 10 # the string is length 10
+for i in range(page_len):
     r = random.randint(0,9)
     pages = pages + str(r)
 
-#pages = "7012030423030321201701"
-#pages = "121030424"
-#pages="70120304230323"
-print(pages)
+print("page string: ",pages)
 
 def FIFO(size, pages):
     queue = []
@@ -55,6 +53,8 @@ def LRU(size, pages):
     return miss
 
 def OPT(size, pages):
+    # the longest distance returns the page position (p) that is currently in
+    # the queue and not being used for the longest in the pages string
     def get_longest_distance(queue, other):
         ld = 0
         p=0
@@ -71,11 +71,13 @@ def OPT(size, pages):
     miss=0 
     hit=0
 
+    
     for i in range(len(pages)):
         if len(queue)<size and pages[i] not in queue:
             queue.append(pages[i])
             miss +=1
         elif len(queue) == size and pages[i] not in queue:
+            # just replace the page at p
             p = get_longest_distance(queue, pages[i::])
             queue[int(p)] = pages[i]
             miss +=1
